@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de tareas</title>
+    <!-- Aplica el tema guardado antes de pintar la página para evitar un parpadeo -->
+    <script>
+        try {
+            if (localStorage.getItem("tema") === "oscuro") {
+                document.documentElement.dataset.theme = "oscuro";
+            }
+        } catch (error) {
+            // Si localStorage no está disponible, se usa el tema claro
+        }
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="encabezado">
+        <h1>Lista de tareas</h1>
+        <button id="boton-tema" class="boton-tema" type="button" aria-label="Cambiar modo oscuro">🌙</button>
+    </header>
+
+    <main class="contenedor">
+        <!-- Tarjetas de resumen: se llenan desde /api/resumen -->
+        <section class="resumen" aria-label="Resumen de pendientes">
+            <div class="tarjeta">
+                <span class="tarjeta-etiqueta">Pendientes</span>
+                <span class="tarjeta-valor" id="resumen-total">0</span>
+            </div>
+            <div class="tarjeta prioridad-alta">
+                <span class="tarjeta-etiqueta">Alta</span>
+                <span class="tarjeta-valor" id="resumen-alta">0</span>
+            </div>
+            <div class="tarjeta prioridad-media">
+                <span class="tarjeta-etiqueta">Media</span>
+                <span class="tarjeta-valor" id="resumen-media">0</span>
+            </div>
+            <div class="tarjeta prioridad-baja">
+                <span class="tarjeta-etiqueta">Baja</span>
+                <span class="tarjeta-valor" id="resumen-baja">0</span>
+            </div>
+            <div class="tarjeta tarjeta-vencidas" id="tarjeta-vencidas">
+                <span class="tarjeta-etiqueta">Vencidas</span>
+                <span class="tarjeta-valor" id="resumen-vencidas">0</span>
+                <span class="tarjeta-detalle" id="resumen-vencen-hoy"></span>
+            </div>
+        </section>
+
+        <!-- Formulario para agregar tareas (no recarga la página) -->
+        <form id="formulario" class="formulario" autocomplete="off">
+            <h2>Nueva tarea</h2>
+            <div class="campos">
+                <label class="campo campo-amplio">
+                    <span>Descripción</span>
+                    <input type="text" name="descripcion" maxlength="200" required placeholder="¿Qué necesitas hacer?">
+                </label>
+                <label class="campo">
+                    <span>Prioridad</span>
+                    <select name="prioridad">
+                        <option value="alta">Alta</option>
+                        <option value="media" selected>Media</option>
+                        <option value="baja">Baja</option>
+                    </select>
+                </label>
+                <label class="campo">
+                    <span>Categoría</span>
+                    <input type="text" name="categoria" maxlength="40" placeholder="general">
+                </label>
+                <label class="campo">
+                    <span>Fecha límite</span>
+                    <input type="date" name="fecha_limite">
+                </label>
+            </div>
+            <button type="submit" class="boton-principal">Agregar tarea</button>
+        </form>
+
+        <!-- Filtros en vivo -->
+        <section class="filtros">
+            <input id="buscador" type="search" placeholder="Buscar por descripción o categoría…" aria-label="Buscar tareas">
+            <div class="botones-filtro" role="group" aria-label="Filtrar por estado">
+                <button type="button" class="filtro activo" data-filtro="todas">Todas</button>
+                <button type="button" class="filtro" data-filtro="pendientes">Pendientes</button>
+                <button type="button" class="filtro" data-filtro="completadas">Completadas</button>
+            </div>
+        </section>
+
+        <p id="mensaje" class="mensaje" role="status" hidden></p>
+
+        <ul id="lista" class="lista" aria-live="polite"></ul>
+        <p id="sin-tareas" class="sin-tareas" hidden>No hay tareas que coincidan.</p>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

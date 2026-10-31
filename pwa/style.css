@@ -1,0 +1,491 @@
+/* Colores como variables para poder cambiar entre modo claro y oscuro */
+:root {
+    --fondo: #f3f5f9;
+    --superficie: #ffffff;
+    --texto: #1f2933;
+    --texto-suave: #6b7785;
+    --borde: #dde3ec;
+    --acento: #4f6bed;
+    --acento-texto: #ffffff;
+    --alta: #e5484d;
+    --media: #f5a524;
+    --baja: #30a46c;
+    --vencida: #e5484d;
+    --vencida-fondo: #fdecec;
+    --sombra: 0 2px 10px rgba(15, 23, 42, 0.08);
+}
+
+/* Modo oscuro: se activa con el botón y se guarda en localStorage */
+:root[data-theme="oscuro"] {
+    --fondo: #0f1419;
+    --superficie: #1a222c;
+    --texto: #e6ebf2;
+    --texto-suave: #8a96a6;
+    --borde: #2b3644;
+    --acento: #7c93ff;
+    --acento-texto: #0f1419;
+    --vencida-fondo: #3a1f24;
+    --sombra: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* El atributo hidden debe ocultar siempre, aunque la clase tenga display */
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    line-height: 1.4;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 16px;
+    max-width: 880px;
+    margin: 0 auto;
+}
+
+.encabezado h1 {
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.boton-tema {
+    border: 1px solid var(--borde);
+    background: var(--superficie);
+    color: var(--texto);
+    border-radius: 999px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.boton-tema:hover {
+    transform: rotate(15deg);
+}
+
+.contenedor {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 16px 3rem;
+}
+
+/* Tarjetas de resumen */
+.resumen {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.tarjeta {
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: var(--sombra);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-left: 5px solid var(--borde);
+}
+
+.tarjeta.prioridad-alta { border-left-color: var(--alta); }
+.tarjeta.prioridad-media { border-left-color: var(--media); }
+.tarjeta.prioridad-baja { border-left-color: var(--baja); }
+
+.tarjeta-etiqueta {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+}
+
+.tarjeta-valor {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.tarjeta-detalle {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+}
+
+/* Tarjeta de vencidas resaltada cuando hay tareas atrasadas */
+.tarjeta-vencidas.con-vencidas {
+    background: var(--vencida-fondo);
+    border-color: var(--vencida);
+    border-left-color: var(--vencida);
+    animation: pulso 2s ease-in-out infinite;
+}
+
+.tarjeta-vencidas.con-vencidas .tarjeta-valor {
+    color: var(--vencida);
+}
+
+@keyframes pulso {
+    0%, 100% { box-shadow: var(--sombra); }
+    50% { box-shadow: 0 0 0 4px rgba(229, 72, 77, 0.25); }
+}
+
+/* Formulario */
+.formulario {
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: var(--sombra);
+    margin-bottom: 1.5rem;
+}
+
+.formulario h2 {
+    margin: 0 0 12px;
+    font-size: 1.1rem;
+}
+
+.campos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+}
+
+.campo-amplio {
+    grid-column: 1 / -1;
+}
+
+input,
+select,
+button {
+    font: inherit;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    background: var(--fondo);
+    color: var(--texto);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--acento);
+    box-shadow: 0 0 0 3px rgba(79, 107, 237, 0.25);
+}
+
+.boton-principal {
+    margin-top: 14px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--acento);
+    color: var(--acento-texto);
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.2s ease;
+}
+
+.boton-principal:hover {
+    filter: brightness(1.08);
+}
+
+.boton-principal:active {
+    transform: scale(0.98);
+}
+
+/* Filtros */
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.filtros input[type="search"] {
+    flex: 1 1 220px;
+}
+
+.botones-filtro {
+    display: flex;
+    gap: 6px;
+}
+
+.filtro {
+    padding: 8px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    background: var(--superficie);
+    color: var(--texto);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.filtro.activo {
+    background: var(--acento);
+    border-color: var(--acento);
+    color: var(--acento-texto);
+}
+
+/* Botones de exportar e importar */
+.datos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.boton-secundario {
+    flex: 1 1 200px;
+    padding: 10px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    background: var(--superficie);
+    color: var(--texto);
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.2s ease;
+}
+
+.boton-secundario:hover {
+    border-color: var(--acento);
+}
+
+.boton-secundario:active {
+    transform: scale(0.98);
+}
+
+.mensaje {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--vencida-fondo);
+    color: var(--vencida);
+    animation: entrar 0.3s ease;
+}
+
+.sin-tareas {
+    text-align: center;
+    color: var(--texto-suave);
+    padding: 2rem 0;
+}
+
+/* Lista de tareas */
+.lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tarea {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: var(--sombra);
+    transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
+}
+
+/* Entrada suave al agregar una tarea */
+.tarea.entrar {
+    animation: entrar 0.45s ease both;
+}
+
+@keyframes entrar {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Desvanecimiento al eliminar */
+.tarea.saliendo {
+    opacity: 0;
+    transform: translateX(30px) scale(0.96);
+    pointer-events: none;
+}
+
+.tarea.vencida {
+    background: var(--vencida-fondo);
+    border-color: var(--vencida);
+}
+
+.check {
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    border: 2px solid var(--acento);
+    background: transparent;
+    color: var(--acento-texto);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-size: 0.9rem;
+    transition: background 0.3s ease, transform 0.15s ease;
+}
+
+.check:active {
+    transform: scale(0.9);
+}
+
+.tarea.completada .check {
+    background: var(--baja);
+    border-color: var(--baja);
+}
+
+.cuerpo {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Texto con tachado animado: la línea crece de izquierda a derecha */
+.texto {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.texto::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 2px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.4s ease;
+}
+
+.tarea.completada .texto {
+    color: var(--texto-suave);
+}
+
+.tarea.completada .texto::after {
+    transform: scaleX(1);
+}
+
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--texto-suave);
+}
+
+.etiqueta {
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--borde);
+}
+
+.etiqueta.prioridad-alta { color: var(--alta); border-color: var(--alta); }
+.etiqueta.prioridad-media { color: var(--media); border-color: var(--media); }
+.etiqueta.prioridad-baja { color: var(--baja); border-color: var(--baja); }
+
+.tarea.vencida .etiqueta.fecha {
+    color: var(--vencida);
+    border-color: var(--vencida);
+    font-weight: 600;
+}
+
+.borrar {
+    flex: 0 0 auto;
+    border: none;
+    background: transparent;
+    color: var(--texto-suave);
+    font-size: 1.4rem;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.borrar:hover {
+    color: var(--vencida);
+    background: var(--vencida-fondo);
+}
+
+/* Pantallas pequeñas: tarjetas más compactas y botones más grandes para tocar */
+@media (max-width: 560px) {
+    .encabezado h1 {
+        font-size: 1.3rem;
+    }
+
+    .resumen {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tarjeta-valor {
+        font-size: 1.5rem;
+    }
+
+    .filtros {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .botones-filtro {
+        justify-content: stretch;
+    }
+
+    .filtro {
+        flex: 1;
+    }
+
+    .borrar {
+        padding: 8px 10px;
+    }
+}
+
+/* Quien tenga activado "reducir movimiento" no ve las animaciones */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

@@ -1,0 +1,11 @@
+﻿# Datos personales: tus tareas reales y sus copias de seguridad
+tareas.json
+tareas-app.json
+tareas.json.roto
+
+# Archivos locales de Python y del editor
+__pycache__/
+*.pyc
+
+# Configuración local de Claude Code
+.claude/
