@@ -496,7 +496,7 @@ iniciar();
 // Si falla, la app sigue funcionando; solo no estará disponible sin conexión.
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-        navigator.serviceWorker.register("service-worker.js").catch((error) => {
+        navigator.serviceWorker.register("./service-worker.js").catch((error) => {
             console.warn("No se pudo registrar el service worker:", error);
         });
     });

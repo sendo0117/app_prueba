@@ -1,7 +1,7 @@
 // Service worker: guarda los archivos de la app para que funcione sin conexión.
 // Si cambias algún archivo de la app, sube el número de VERSION para que
 // los navegadores descarguen la versión nueva.
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE = `lista-tareas-${VERSION}`;
 
 // Archivos que forman la app (rutas relativas, para que funcione en cualquier subcarpeta)
@@ -11,8 +11,8 @@ const ARCHIVOS = [
     "./style.css",
     "./app.js",
     "./manifest.json",
-    "./icons/icon-192.png",
-    "./icons/icon-512.png",
+    "./icon-192.png",
+    "./icon-512.png",
 ];
 
 // Al instalar, se descargan y guardan todos los archivos de la app
